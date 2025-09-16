@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDGE Dashboard - AI Career Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        'primary-dark': '#4A49B8'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Liquid Glass Background */
+        .liquid-glass-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(93, 92, 222, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(120, 119, 198, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+            z-index: -2;
+        }
+
+        .liquid-glass-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at top, rgba(93, 92, 222, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom, rgba(120, 119, 198, 0.1) 0%, transparent 50%);
+            animation: liquidFlow 15s ease-in-out infinite;
+        }
+
+        @keyframes liquidFlow {
+            0%, 100% { 
+                background: 
+                    radial-gradient(ellipse at top, rgba(93, 92, 222, 0.1) 0%, transparent 50%),
+                    radial-gradient(ellipse at bottom, rgba(120, 119, 198, 0.1) 0%, transparent 50%);
+            }
+            50% { 
+                background: 
+                    radial-gradient(ellipse at top, rgba(120, 119, 198, 0.2) 0%, transparent 60%),
+                    radial-gradient(ellipse at bottom, rgba(93, 92, 222, 0.15) 0%, transparent 60%);
+            }
+        }
+
+        /* Glass Card Styles */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(93, 92, 222, 0.4);
+            box-shadow: 0 12px 40px rgba(93, 92, 222, 0.2);
+        }
+
+        /* Header Styles */
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -350px;
+            width: 350px;
+            height: 100vh;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(30px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            transition: right 0.3s ease;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .nav-menu.open {
+            right: 0;
+        }
+
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 90;
+        }
+
+        .nav-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Navigation Links */
+        .nav-link {
+            display: flex;
+            align-items: center;
+            space-x: 12px;
+            padding: 16px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        .nav-link:hover {
+            background: rgba(93, 92, 222, 0.2);
+            transform: translateX(8px);
+        }
+
+        .nav-link i {
+            width: 20px;
+            height: 20px;
+            color: #5D5CDE;
+            margin-right: 12px;
+        }
+
+        /* Notifications Dropdown */
+        .notifications-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 350px;
+            max-height: 400px;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 100;
+            overflow-y: auto;
+            margin-top: 8px;
+        }
+
+        .notifications-dropdown.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* MIXI Chat Styles */
+        .mixi-box {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(93, 92, 222, 0.3);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mixi-box::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(93, 92, 222, 0.2) 0%, transparent 70%);
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        .mixi-box:hover::before {
+            width: 200%;
+            height: 200%;
+        }
+
+        .mixi-box:hover {
+            transform: scale(1.02);
+            border-color: rgba(93, 92, 222, 0.6);
+            box-shadow: 0 10px 30px rgba(93, 92, 222, 0.3);
+        }
+
+        /* Progress Ring */
+        .progress-ring {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+        }
+
+        .progress-ring-bg {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-ring-fill {
+            stroke: url(#progressGradient);
+            stroke-dasharray: 377;
+            stroke-dashoffset: 377;
+            animation: progressFill 2s ease-out forwards;
+        }
+
+        @keyframes progressFill {
+            to {
+                stroke-dashoffset: 94.25; /* 75% of 377 */
+            }
+        }
+
+        /* Career Card Styles */
+        .career-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 18px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .career-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #5D5CDE, #764ba2, #5D5CDE);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .career-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(93, 92, 222, 0.4);
+            box-shadow: 0 15px 40px rgba(93, 92, 222, 0.2);
+        }
+
+        /* Job Certification Badge */
+        .cert-badge {
+            background: linear-gradient(135deg, rgba(93, 92, 222, 0.2), rgba(120, 119, 198, 0.1));
+            border: 1px solid rgba(93, 92, 222, 0.3);
+            border-radius: 50px;
+            padding: 8px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            margin: 4px;
+            animation: certPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes certPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Button Styles */
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .btn-icon i {
+            width: 20px;
+            height: 20px;
+            color: #ffffff;
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(93, 92, 222, 0.5);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(93, 92, 222, 0.7);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .notifications-dropdown {
+                width: calc(100vw - 2rem);
+                right: 1rem;
+            }
+
+            .mixi-box {
+                margin-bottom: 16px;
+            }
+        }
+
+        /* Animation for page load */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Ensure icons are visible */
+        i[data-lucide] {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            stroke-width: 2;
+            stroke: currentColor;
+            fill: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Liquid Glass Background -->
+    <div class="liquid-glass-bg"></div>
+
+    <!-- Navigation Overlay -->
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <!-- User Info -->
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center">
+                        <i data-lucide="user" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-semibold text-white">Welcome back, Alex</h2>
+                        <p class="text-sm text-gray-400">Ready to continue your journey?</p>
+                    </div>
+                </div>
+
+                <!-- Header Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <button id="notificationBtn" class="btn-icon relative">
+                            <i data-lucide="bell" class="w-5 h-5 text-white"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                        
+                        <!-- Notifications Dropdown -->
+                        <div id="notificationsDropdown" class="notifications-dropdown">
+                            <div class="p-4 border-b border-white/10">
+                                <h3 class="text-lg font-semibold text-white">Notifications</h3>
+                            </div>
+                            <div class="p-2">
+                                <div class="p-3 hover:bg-white/5 rounded-lg cursor-pointer">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                            <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-white">Course Completed!</p>
+                                            <p class="text-xs text-gray-400">You've completed "Medical Foundations"</p>
+                                            <p class="text-xs text-gray-500 mt-1">2 hours ago</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-3 hover:bg-white/5 rounded-lg cursor-pointer">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                                            <i data-lucide="message-circle" class="w-4 h-4 text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-white">New Message from MIXI</p>
+                                            <p class="text-xs text-gray-400">Ready for your next challenge?</p>
+                                            <p class="text-xs text-gray-500 mt-1">5 hours ago</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-3 hover:bg-white/5 rounded-lg cursor-pointer">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                                            <i data-lucide="award" class="w-4 h-4 text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-white">New Achievement Unlocked</p>
+                                            <p class="text-xs text-gray-400">Expert Learner badge earned</p>
+                                            <p class="text-xs text-gray-500 mt-1">1 day ago</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hamburger Menu -->
+                    <button id="menuBtn" class="btn-icon">
+                        <i data-lucide="menu" class="w-5 h-5 text-white"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav id="navMenu" class="nav-menu">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-8">
+                <h3 class="text-xl font-bold text-white">Menu</h3>
+                <button id="closeMenuBtn" class="btn-icon">
+                    <i data-lucide="x" class="w-4 h-4 text-white"></i>
+                </button>
+            </div>
+            <ul class="space-y-2">
+                <li>
+                    <a href="#" class="nav-link">
+                        <i data-lucide="home"></i>
+                        <span class="text-white">Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link">
+                        <i data-lucide="history"></i>
+                        <span class="text-white">History</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link">
+                        <i data-lucide="briefcase"></i>
+                        <span class="text-white">Careers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link">
+                        <i data-lucide="award"></i>
+                        <span class="text-white">Awards</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link">
+                        <i data-lucide="search"></i>
+                        <span class="text-white">Jobs</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- Additional Menu Options -->
+            <div class="mt-8 pt-8 border-t border-white/10">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i data-lucide="settings"></i>
+                            <span class="text-white">Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i data-lucide="help-circle"></i>
+                            <span class="text-white">Help & Support</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link">
+                            <i data-lucide="log-out"></i>
+                            <span class="text-white">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8 relative z-10">
+        <!-- MIXI Interaction Section -->
+        <section class="mb-12 fade-in" style="animation-delay: 0.2s;">
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Talk with MIXI -->
+                <div class="mixi-box p-8 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="mic" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Talk with MIXI</h3>
+                    <p class="text-gray-300 mb-6">Use voice commands to interact with your AI career assistant</p>
+                    <a href="talk.html"><button class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all transform hover:scale-105">
+                        Start Voice Chat
+                    </button></a>
+                </div>
+
+                <!-- Chat with MIXI -->
+                <div class="mixi-box p-8 text-center">
+                    <div class="w-16 h-16 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="message-circle" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Chat with MIXI</h3>
+                    <p class="text-gray-300 mb-6">Get instant answers and guidance from your AI tutor</p>
+                    <a href="chat.html"><button class="bg-gradient-to-r from-primary to-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all transform hover:scale-105">
+                        Open Chat
+                    </button></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Careers Enrolled Section -->
+        <section class="mb-12 fade-in" style="animation-delay: 0.4s;">
+            <div class="glass-card p-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-3xl font-bold text-white">Careers Enrolled</h2>
+                    <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors">
+                        View All
+                    </button>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Career Card 1 -->
+                    <div class="career-card p-6">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center mb-4">
+                            <i data-lucide="stethoscope" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Medical Career</h3>
+                        <p class="text-gray-400 mb-4">Complete medical training program</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-green-400 font-medium">75% Complete</span>
+                            <div class="w-16 h-2 bg-white/20 rounded-full overflow-hidden">
+                                <div class="w-3/4 h-full bg-gradient-to-r from-green-400 to-blue-500 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Career Card 2 -->
+                    <div class="career-card p-6">
+                        <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center mb-4">
+                            <i data-lucide="code" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Software Engineering</h3>
+                        <p class="text-gray-400 mb-4">Full-stack development course</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-blue-400 font-medium">60% Complete</span>
+                            <div class="w-16 h-2 bg-white/20 rounded-full overflow-hidden">
+                                <div class="w-3/5 h-full bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Career Card 3 -->
+                    <div class="career-card p-6">
+                        <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center mb-4">
+                            <i data-lucide="briefcase" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold text-white mb-2">Business Leadership</h3>
+                        <p class="text-gray-400 mb-4">Executive management training</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-orange-400 font-medium">45% Complete</span>
+                            <div class="w-16 h-2 bg-white/20 rounded-full overflow-hidden">
+                                <div class="w-2/5 h-full bg-gradient-to-r from-orange-400 to-red-500 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Section -->
+        <section class="mb-12 fade-in" style="animation-delay: 0.6s;">
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Overall Progress -->
+                <div class="glass-card p-8 text-center">
+                    <h3 class="text-2xl font-bold text-white mb-6">Overall Progress</h3>
+                    <div class="progress-ring mx-auto mb-6">
+                        <svg width="120" height="120">
+                            <defs>
+                                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#5D5CDE"/>
+                                    <stop offset="100%" style="stop-color:#764ba2"/>
+                                </linearGradient>
+                            </defs>
+                            <circle class="progress-ring-bg progress-ring-circle" cx="60" cy="60" r="50"/>
+                            <circle class="progress-ring-fill progress-ring-circle" cx="60" cy="60" r="50"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-2xl font-bold text-white">75%</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-400">You're making excellent progress!</p>
+                </div>
+
+                <!-- Weekly Stats -->
+                <div class="glass-card p-8">
+                    <h3 class="text-2xl font-bold text-white mb-6">This Week</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-300">Study Hours</span>
+                            <span class="text-white font-semibold">24h</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-300">Courses Completed</span>
+                            <span class="text-white font-semibold">3</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-300">Assessments Passed</span>
+                            <span class="text-white font-semibold">7</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-gray-300">Streak Days</span>
+                            <span class="text-white font-semibold">12</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Job Certifications Section -->
+        <section class="fade-in" style="animation-delay: 0.8s;">
+            <div class="glass-card p-8">
+                <h2 class="text-3xl font-bold text-white mb-6">Upcoming Certifications</h2>
+                <p class="text-gray-300 mb-8">Based on your progress, you're on track for these industry certifications:</p>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Medical Certifications -->
+                    <div class="space-y-4">
+                        <h4 class="text-xl font-semibold text-white mb-4">Medical Field</h4>
+                        <div class="space-y-3">
+                            <div class="cert-badge">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-green-400"></i>
+                                <span>Medical Assistant Certification</span>
+                                <span class="ml-auto text-green-400">90%</span>
+                            </div>
+                            <div class="cert-badge">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-blue-400"></i>
+                                <span>CPR & First Aid Certification</span>
+                                <span class="ml-auto text-blue-400">85%</span>
+                            </div>
+                            <div class="cert-badge">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-purple-400"></i>
+                                <span>Healthcare Ethics Certificate</span>
+                                <span class="ml-auto text-purple-400">75%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tech Certifications -->
+                    <div class="space-y-4">
+                        <h4 class="text-xl font-semibold text-white mb-4">Technology Field</h4>
+                        <div class="space-y-3">
+                            <div class="cert-badge">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-blue-400"></i>
+                                <span>Full-Stack Developer Certificate</span>
+                                <span class="ml-auto text-blue-400">70%</span>
+                            </div>
+                            <div class="cert-badge">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-green-400"></i>
+                                <span>AWS Cloud Practitioner</span>
+                                <span class="ml-auto text-green-400">60%</span>
+                            </div>
+                            <div class="cert-badge">
+                                <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
+                                <span>JavaScript Fundamentals</span>
+                                <span class="ml-auto text-orange-400">80%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 bg-gradient-to-r from-primary/20 to-purple-600/20 rounded-lg border border-primary/30">
+                    <h5 class="text-lg font-semibold text-white mb-2">🎯 Next Milestone</h5>
+                    <p class="text-gray-300">Complete 2 more medical simulation assessments to unlock your Medical Assistant Certification!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Initialize Lucide icons first
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize icons
+            lucide.createIcons();
+            
+            // Wait a moment for icons to load, then initialize functionality
+            setTimeout(initializeDashboard, 100);
+        });
+
+        function initializeDashboard() {
+            // Navigation Menu Toggle
+            const menuBtn = document.getElementById('menuBtn');
+            const navMenu = document.getElementById('navMenu');
+            const navOverlay = document.getElementById('navOverlay');
+            const closeMenuBtn = document.getElementById('closeMenuBtn');
+
+            function toggleMenu() {
+                console.log('Toggle menu called'); // Debug log
+                navMenu.classList.toggle('open');
+                navOverlay.classList.toggle('open');
+                
+                // Update menu button icon
+                const menuIcon = menuBtn.querySelector('i');
+                if (navMenu.classList.contains('open')) {
+                    menuIcon.setAttribute('data-lucide', 'x');
+                } else {
+                    menuIcon.setAttribute('data-lucide', 'menu');
+                }
+                lucide.createIcons(); // Re-initialize icons
+            }
+
+            function closeMenu() {
+                navMenu.classList.remove('open');
+                navOverlay.classList.remove('open');
+                
+                // Reset menu button icon
+                const menuIcon = menuBtn.querySelector('i');
+                menuIcon.setAttribute('data-lucide', 'menu');
+                lucide.createIcons();
+            }
+
+            // Add event listeners
+            if (menuBtn) {
+                menuBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleMenu();
+                });
+            }
+
+            if (closeMenuBtn) {
+                closeMenuBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    closeMenu();
+                });
+            }
+
+            if (navOverlay) {
+                navOverlay.addEventListener('click', closeMenu);
+            }
+
+            // Notifications Dropdown
+            const notificationBtn = document.getElementById('notificationBtn');
+            const notificationsDropdown = document.getElementById('notificationsDropdown');
+
+            if (notificationBtn && notificationsDropdown) {
+                notificationBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    notificationsDropdown.classList.toggle('open');
+                });
+
+                // Close notifications when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!notificationBtn.contains(e.target) && !notificationsDropdown.contains(e.target)) {
+                        notificationsDropdown.classList.remove('open');
+                    }
+                });
+            }
+
+            // MIXI Interaction Buttons
+            const mixiBoxes = document.querySelectorAll('.mixi-box');
+            mixiBoxes.forEach(box => {
+                box.addEventListener('click', function() {
+                    const title = this.querySelector('h3').textContent;
+                    if (title.includes('Talk')) {
+                        console.log('Starting voice chat with MIXI...');
+                        // Add voice chat functionality here
+                        showNotification('Voice chat with MIXI starting...', 'info');
+                    } else {
+                        console.log('Opening text chat with MIXI...');
+                        // Add text chat functionality here
+                        showNotification('Opening chat with MIXI...', 'info');
+                    }
+                });
+            });
+
+            // Career Cards Interaction
+            const careerCards = document.querySelectorAll('.career-card');
+            careerCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const careerName = this.querySelector('h3').textContent;
+                    console.log(`Opening ${careerName} details...`);
+                    showNotification(`Opening ${careerName} details...`, 'info');
+                });
+            });
+
+            // Navigation Links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const linkText = this.querySelector('span').textContent;
+                    console.log(`Navigating to ${linkText}...`);
+                    showNotification(`Navigating to ${linkText}...`, 'info');
+                    closeMenu();
+                });
+            });
+
+            // Initialize animations
+            initializeAnimations();
+            
+            // Initialize background effects
+            initializeBackgroundEffects();
+            
+            // Initialize keyboard shortcuts
+            initializeKeyboardShortcuts();
+        }
+
+        // Show notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full`;
+            
+            // Set notification style based on type
+            switch(type) {
+                case 'success':
+                    notification.classList.add('bg-green-500', 'text-white');
+                    break;
+                case 'error':
+                    notification.classList.add('bg-red-500', 'text-white');
+                    break;
+                case 'warning':
+                    notification.classList.add('bg-yellow-500', 'text-black');
+                    break;
+                default:
+                    notification.classList.add('bg-blue-500', 'text-white');
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Dynamic Background Effect
+        function initializeBackgroundEffects() {
+            let hue = 0;
+            function animateBackground() {
+                hue = (hue + 0.5) % 360;
+                const bg = document.querySelector('.liquid-glass-bg');
+                if (bg) {
+                    bg.style.filter = `hue-rotate(${hue}deg)`;
+                }
+                requestAnimationFrame(animateBackground);
+            }
+            animateBackground();
+        }
+
+        // Fade in animations
+        function initializeAnimations() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            fadeElements.forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Keyboard shortcuts
+        function initializeKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'm') {
+                    e.preventDefault();
+                    const menuBtn = document.getElementById('menuBtn');
+                    if (menuBtn) menuBtn.click();
+                }
+                if (e.ctrlKey && e.key === 'n') {
+                    e.preventDefault();
+                    const notificationBtn = document.getElementById('notificationBtn');
+                    if (notificationBtn) notificationBtn.click();
+                }
+                if (e.key === 'Escape') {
+                    // Close any open dropdowns/menus
+                    document.getElementById('navMenu')?.classList.remove('open');
+                    document.getElementById('navOverlay')?.classList.remove('open');
+                    document.getElementById('notificationsDropdown')?.classList.remove('open');
+                }
+            });
+        }
+
+        // Real-time notifications simulation
+        let notificationCount = 3;
+        function addNotification() {
+            notificationCount++;
+            const badge = document.querySelector('.notification-badge');
+            if (badge) {
+                badge.textContent = notificationCount;
+                badge.style.animation = 'none';
+                setTimeout(() => {
+                    badge.style.animation = 'badgePulse 0.5s ease-in-out';
+                }, 10);
+            }
+        }
+
+        // Simulate new notifications every 30 seconds
+        setInterval(addNotification, 30000);
+
+        // Error handling for missing elements
+        window.addEventListener('error', function(e) {
+            console.error('Dashboard error:', e.error);
+        });
+
+        // Ensure icons are properly loaded
+        function ensureIconsLoaded() {
+            const icons = document.querySelectorAll('[data-lucide]');
+            icons.forEach(icon => {
+                if (!icon.querySelector('svg')) {
+                    // Re-create icon if not found
+                    const iconName = icon.getAttribute('data-lucide');
+                    icon.innerHTML = '';
+                    icon.setAttribute('data-lucide', iconName);
+                }
+            });
+            lucide.createIcons();
+        }
+
+        // Check icons every 2 seconds and reload if necessary
+        setInterval(ensureIconsLoaded, 2000);
+    </script>
+</body>
+</html>

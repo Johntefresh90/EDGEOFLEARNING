@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - SkillForge AI | Choose Your Learning Plan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#5D5CDE',
+                        'primary-dark': '#4B4BCF',
+                        dark: {
+                            bg: '#181818',
+                            card: '#2A2A2A',
+                            text: '#E5E5E5'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'slide-in': 'slideIn 0.5s ease-out',
+                        'fade-in': 'fadeIn 0.8s ease-out',
+                        'scale-in': 'scaleIn 0.6s ease-out',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'shake': 'shake 0.5s ease-in-out'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(93, 92, 222, 0.3); }
+            to { box-shadow: 0 0 40px rgba(93, 92, 222, 0.7); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #5D5CDE, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dark .glass-effect {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(93, 92, 222, 0.2);
+        }
+        
+        .dark .card-hover:hover {
+            box-shadow: 0 20px 40px rgba(93, 92, 222, 0.3);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #5D5CDE;
+        }
+        
+        .nav-link.active {
+            color: #5D5CDE;
+            font-weight: 600;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #5D5CDE, #8B5CF6);
+            border-radius: 1px;
+        }
+        
+        .pricing-card {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #5D5CDE, #8B5CF6, #5D5CDE);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .pricing-card:hover::before {
+            opacity: 1;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .pricing-card.popular {
+            transform: scale(1.05);
+            border: 2px solid #5D5CDE;
+        }
+        
+        .pricing-card.popular::before {
+            opacity: 0.3;
+        }
+        
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        
+        .popular-badge {
+            background: linear-gradient(45deg, #5D5CDE, #8B5CF6);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 4px 12px rgba(93, 92, 222, 0.3);
+        }
+        
+        .pricing-toggle {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .pricing-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 30px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: #5D5CDE;
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+        
+        .feature-check {
+            color: #10B981;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .feature-unavailable {
+            color: #EF4444;
+            margin-right: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .savings-badge {
+            background: linear-gradient(45deg, #10B981, #059669);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        .faq-item {
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item.active {
+            background-color: rgba(93, 92, 222, 0.05);
+        }
+        
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-content.active {
+            max-height: 200px;
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dark .testimonial-card {
+            background: linear-gradient(135deg, rgba(42, 42, 42, 0.8), rgba(42, 42, 42, 0.4));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .floating-element:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-element:nth-child(2) { top: 20%; right: 15%; animation-delay: 2s; }
+        .floating-element:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 4s; }
+        .floating-element:nth-child(4) { bottom: 20%; right: 25%; animation-delay: 6s; }
+        .floating-element:nth-child(5) { top: 50%; left: 5%; animation-delay: 1s; }
+        .floating-element:nth-child(6) { top: 60%; right: 10%; animation-delay: 3s; }
+        
+        .mobile-menu-backdrop {
+            backdrop-filter: blur(5px);
+        }
+        
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #5D5CDE, #8B5CF6);
+            transform-origin: left;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .comparison-table {
+            overflow-x: auto;
+        }
+        
+        .comparison-row {
+            transition: background-color 0.2s ease;
+        }
+        
+        .comparison-row:hover {
+            background-color: rgba(93, 92, 222, 0.05);
+        }
+        
+        .price-animation {
+            transition: all 0.3s ease;
+        }
+        
+        .enterprise-gradient {
+            background: linear-gradient(135deg, #1F2937 0%, #374151 50%, #4B5563 100%);
+        }
+        
+        .money-back-guarantee {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .money-back-guarantee::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(16, 185, 129, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .calculator-input {
+            transition: all 0.2s ease;
+        }
+        
+        .calculator-input:focus {
+            transform: scale(1.02);
+        }
+        
+        .roi-result {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-dark-bg text-gray-900 dark:text-dark-text transition-colors duration-300">
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator" id="scrollProgress"></div>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-effect">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-brain text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold gradient-text">SkillForge AI</h1>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Shape Your Future</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-base transition-colors" data-page="home">Home</a>
+                    <a href="#courses" class="nav-link text-base transition-colors" data-page="courses">Courses</a>
+                    <a href="#careers" class="nav-link text-base transition-colors" data-page="careers">Careers</a>
+                    <a href="#avatars" class="nav-link text-base transition-colors" data-page="avatars">Avatars</a>
+                    <a href="#features" class="nav-link text-base transition-colors" data-page="features">Features</a>
+                    <a href="#pricing" class="nav-link active text-base transition-colors" data-page="pricing">Pricing</a>
+                    <a href="#blog" class="nav-link text-base transition-colors" data-page="blog">Blog</a>
+                </div>
+
+                <!-- Right Side Controls -->
+                <div class="flex items-center space-x-4">
+                    <!-- Dark Mode Toggle -->
+                    <button id="darkModeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-moon dark:fa-sun text-lg"></i>
+                    </button>
+
+                    <!-- CTA Buttons -->
+                    <div class="hidden lg:flex items-center space-x-3">
+                        <button id="loginBtn" class="px-4 py-2 text-base text-primary hover:bg-primary hover:text-white rounded-lg transition-all">Login</button>
+                        <button id="getStartedBtn" class="px-6 py-2 text-base bg-primary text-white rounded-lg hover:bg-primary-dark transition-all">Get Started</button>
+                    </div>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobileMenuToggle" class="lg:hidden p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <div class="w-6 h-6 flex flex-col justify-around">
+                            <span class="w-6 h-0.5 bg-current transform transition-transform duration-300" id="line1"></span>
+                            <span class="w-6 h-0.5 bg-current transform transition-transform duration-300" id="line2"></span>
+                            <span class="w-6 h-0.5 bg-current transform transition-transform duration-300" id="line3"></span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="lg:hidden mt-4 hidden">
+                <div class="mobile-menu-backdrop bg-white dark:bg-dark-card rounded-lg shadow-xl p-6 space-y-4">
+                    <a href="home.html" class="mobile-nav-link block text-base py-2 hover:text-primary transition-colors" data-page="home">Home</a>
+                    <a href="courses.html" class="mobile-nav-link block text-base py-2 hover:text-primary transition-colors" data-page="courses">Courses</a>
+                    <a href="careers.html" class="mobile-nav-link block text-base py-2 hover:text-primary transition-colors" data-page="careers">Careers</a>
+                    <a href="avatars.html" class="mobile-nav-link block text-base py-2 hover:text-primary transition-colors" data-page="avatars">Avatars</a>
+                    <a href="features.html" class="mobile-nav-link block text-base py-2 hover:text-primary transition-colors" data-page="features">Features</a>
+                    <a href="pricing.html" class="mobile-nav-link block text-base py-2 text-primary font-semibold" data-page="pricing">Pricing</a>
+                    <a href="blog.html" class="mobile-nav-link block text-base py-2 hover:text-primary transition-colors" data-page="blog">Blog</a>
+                    <div class="hidden lg:flex items-center space-x-3">
+                        <a href="login.html"><button class="px-4 py-2 text-base text-primary hover:bg-primary hover:text-white rounded-lg transition-all">Login</button></a>
+                        <a href="signup.html"><button class="px-6 py-2 text-base bg-primary text-white rounded-lg hover:bg-primary-dark transition-all">Sign up</button></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="pt-24 pb-16 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-purple-900 dark:to-indigo-900 relative">
+        <div class="floating-elements">
+            <div class="floating-element w-20 h-20 bg-primary rounded-full"></div>
+            <div class="floating-element w-16 h-16 bg-purple-500 rounded-lg transform rotate-45"></div>
+            <div class="floating-element w-24 h-24 bg-blue-500 rounded-full"></div>
+            <div class="floating-element w-12 h-12 bg-pink-500 rounded-lg"></div>
+            <div class="floating-element w-18 h-18 bg-green-500 rounded-full"></div>
+            <div class="floating-element w-14 h-14 bg-yellow-500 rounded-lg transform rotate-12"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                    Choose Your<br>
+                    <span class="gradient-text">Learning Journey</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8">
+                    Flexible pricing plans designed to grow with you. Start free and upgrade as your skills advance.
+                </p>
+                
+                <!-- Pricing Toggle -->
+                <div class="flex items-center justify-center mb-8">
+                    <span class="text-lg font-semibold mr-4" id="monthlyLabel">Monthly</span>
+                    <label class="pricing-toggle">
+                        <input type="checkbox" id="pricingToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="text-lg font-semibold ml-4" id="yearlyLabel">Yearly</span>
+                    <span class="savings-badge">Save 20%</span>
+                </div>
+                
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-8">
+                    ✨ <strong>14-day free trial</strong> on all paid plans • No credit card required • Cancel anytime
+                </p>
+            </div>
+
+            <!-- Pricing Stats -->
+            <div class="grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-users text-white text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-green-500 mb-2">50K+</div>
+                    <div class="text-gray-600 dark:text-gray-400">Happy Learners</div>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-star text-white text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-blue-500 mb-2">4.9★</div>
+                    <div class="text-gray-600 dark:text-gray-400">Average Rating</div>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-certificate text-white text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-purple-500 mb-2">95%</div>
+                    <div class="text-gray-600 dark:text-gray-400">Completion Rate</div>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-briefcase text-white text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-orange-500 mb-2">87%</div>
+                    <div class="text-gray-600 dark:text-gray-400">Career Advance</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Plans Section -->
+    <section id="pricing-plans" class="py-20 bg-white dark:bg-dark-bg">
+        <div class="container mx-auto px-4">
+            <div class="grid lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+                
+                <!-- Free Plan -->
+                <div class="pricing-card bg-white dark:bg-dark-card rounded-2xl shadow-lg p-8 card-hover">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold mb-2">Explorer</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-6">Perfect to get started</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold">$0</span>
+                            <span class="text-gray-600 dark:text-gray-400">/month</span>
+                        </div>
+                        <button class="w-full px-6 py-3 border-2 border-primary text-primary hover:bg-primary hover:text-white rounded-lg transition-all font-semibold">
+                            Get Started Free
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Access to 50+ courses</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">1 AI tutor (Alexa)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Basic progress tracking</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Community forum access</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Mobile app access</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-times feature-unavailable"></i>
+                            <span class="text-sm text-gray-400">Certificate completion</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-times feature-unavailable"></i>
+                            <span class="text-sm text-gray-400">Priority support</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="pricing-card bg-white dark:bg-dark-card rounded-2xl shadow-lg p-8 card-hover">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold mb-2">Professional</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-6">Most popular choice</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold price-animation" data-monthly="29" data-yearly="232">$29</span>
+                            <span class="text-gray-600 dark:text-gray-400 billing-cycle">/month</span>
+                        </div>
+                        <button class="w-full px-6 py-3 bg-primary text-white hover:bg-primary-dark rounded-lg transition-all font-semibold">
+                            Start 14-Day Trial
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Access to 500+ courses</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">3 AI tutors (Alexa, Envy, Mixi)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Advanced analytics</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Course certificates</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Priority email support</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Skills assessments</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Career guidance</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Premium Plan (Popular) -->
+                <div class="pricing-card popular bg-white dark:bg-dark-card rounded-2xl shadow-xl p-8 card-hover">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="text-center mb-8 mt-4">
+                        <h3 class="text-2xl font-bold mb-2">Premium</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-6">For serious learners</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold price-animation" data-monthly="59" data-yearly="472">$59</span>
+                            <span class="text-gray-600 dark:text-gray-400 billing-cycle">/month</span>
+                        </div>
+                        <button class="w-full px-6 py-3 bg-gradient-to-r from-primary to-purple-600 text-white hover:from-primary-dark hover:to-purple-700 rounded-lg transition-all font-semibold">
+                            Start 14-Day Trial
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Access to ALL 2,500+ courses</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">All 5 AI tutors</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">AI-powered learning paths</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Industry-recognized certificates</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">24/7 priority chat support</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">1-on-1 career coaching</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check feature-check"></i>
+                            <span class="text-sm">Offline content download</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="pricing-card enterprise-gradient rounded-2xl shadow-lg p-8 card-hover text-white">
+                    <div class="text-center mb-8">
+                        <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
+                        <p class="text-gray-300 text-sm mb-6">For teams & organizations</p>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold">Custom</span>
+                            <span class="text-gray-300">/pricing</span>
+                        </div>
+                        <button class="w-full px-6 py-3 bg-white text-gray-900 hover:bg-gray-100 rounded-lg transition-all font-semibold">
+                            Contact Sales
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-3"></i>
+                            <span class="text-sm">Everything in Premium</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-3"></i>
+                            <span class="text-sm">Custom AI tutor training</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-3"></i>
+                            <span class="text-sm">Advanced team analytics</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-3"></i>
+                            <span class="text-sm">Single Sign-On (SSO)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-3"></i>
+                            <span class="text-sm">Dedicated account manager</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-3"></i>
+                            <span class="text-sm">Custom integrations</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-400 mr-3"></i>
+                            <span class="text-sm">SLA guarantee</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Comparison Table -->
+    <section id="comparison" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Detailed Plan Comparison</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                    Compare all features across our plans to find the perfect fit for your learning goals
+                </p>
+            </div>
+
+            <div class="max-w-6xl mx-auto">
+                <div class="comparison-table bg-white dark:bg-dark-card rounded-2xl shadow-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th class="px-6 py-4 text-left">Features</th>
+                                    <th class="px-6 py-4 text-center">Explorer</th>
+                                    <th class="px-6 py-4 text-center">Professional</th>
+                                    <th class="px-6 py-4 text-center">Premium</th>
+                                    <th class="px-6 py-4 text-center">Enterprise</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                <tr class="comparison-row">
+                                    <td class="px-6 py-4 font-semibold">Course Access</td>
+                                    <td class="px-6 py-4 text-center text-sm">50+ courses</td>
+                                    <td class="px-6 py-4 text-center text-sm">500+ courses</td>
+                                    <td class="px-6 py-4 text-center text-sm">2,500+ courses</td>
+                                    <td class="px-6 py-4 text-center text-sm">All courses + Custom</td>
+                                </tr>
+                                <tr class="comparison-row">
+                                    <td class="px-6 py-4 font-semibold">AI Tutors</td>
+                                    <td class="px-6 py-4 text-center text-sm">1 (Alexa)</td>
+                                    <td class="px-6 py-4 text-center text-sm">3 tutors</td>
+                                    <td class="px-6 py-4 text-center text-sm">All 5 tutors</td>
+                                    <td class="px-6 py-4 text-center text-sm">Custom tutors</td>
+                                </tr>
+                                <tr class="comparison-row">
+                                    <td class="px-6 py-4 font-semibold">Certificates</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <i class="fas fa-times text-red-500"></i>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <i class="fas fa-check text-green-500"></i>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <i class="fas fa-check text-green-500"></i>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <i class="fas fa-check text-green-500"></i>
+                                    </td>
+                                </tr>
+                                <tr class="comparison-row">
+                                    <td class="px-6 py-4 font-semibold">Priority Support</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <i class="fas fa-times text-red-500"></i>
+                                    </td>
+                                    <td class="px-6 py-4 text-center text-sm">Email</td>
+                                    <td class="px-6 py-4 text-center text-sm">24/7 Chat</td>
+                                    <td class="px-6 py-4 text-center text-sm">Dedicated Manager</td>
+                                </tr>
+                                <tr class="comparison-row">
+                                    <td class="px-6 py-4 font-semibold">Career Coaching</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <i class="fas fa-times text-red-500"></i>
+                                    </td>
+                                    <td class="px-6 py-4 text-center text-sm">AI-powered</td>
+                                    <td class="px-6 py-4 text-center text-sm">1-on-1 sessions</td>
+                                    <td class="px-6 py-4 text-center text-sm">Team coaching</td>
+                                </tr>
+                                <tr class="comparison-row">
+                                    <td class="px-6 py-4 font-semibold">Offline Access</td>
+                                    <td class="px-6 py-4 text-center">
+                                        <i class="fas fa-times text-red-500"></i>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <i class="fas fa-times text-red-500"></i>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <i class="fas fa-check text-green-500"></i>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <i class="fas fa-check text-green-500"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Calculator -->
+    <section id="roi-calculator" class="py-20 bg-white dark:bg-dark-bg">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Calculate Your ROI</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                    See how SkillForge AI can boost your earning potential
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800 dark:to-purple-900 rounded-2xl p-8">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Current Annual Salary</label>
+                                <input type="number" id="currentSalary" class="calculator-input w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-dark-bg outline-none focus:border-primary transition-colors" placeholder="50000" value="50000">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Target Role</label>
+                                <select id="targetRole" class="calculator-input w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-dark-bg outline-none focus:border-primary transition-colors">
+                                    <option value="15">Software Developer (+15%)</option>
+                                    <option value="25">Data Scientist (+25%)</option>
+                                    <option value="30">ML Engineer (+30%)</option>
+                                    <option value="20">Product Manager (+20%)</option>
+                                    <option value="35">DevOps Engineer (+35%)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold mb-2">Learning Plan</label>
+                                <select id="learningPlan" class="calculator-input w-full px-4 py-3 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-dark-bg outline-none focus:border-primary transition-colors">
+                                    <option value="29">Professional - $29/month</option>
+                                    <option value="59">Premium - $59/month</option>
+                                </select>
+                            </div>
+                            <button id="calculateROI" class="w-full px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-all font-semibold">
+                                Calculate My ROI
+                            </button>
+                        </div>
+                        
+                        <div id="roiResults" class="space-y-6">
+                            <div class="roi-result text-white p-6 rounded-xl">
+                                <h3 class="text-2xl font-bold mb-4">Your Investment Returns</h3>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center">
+                                        <span>New Salary:</span>
+                                        <span class="text-2xl font-bold" id="newSalary">$57,500</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span>Annual Increase:</span>
+                                        <span class="text-2xl font-bold" id="annualIncrease">$7,500</span>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span>Total Investment:</span>
+                                        <span class="text-lg" id="totalInvestment">$348</span>
+                                    </div>
+                                    <div class="border-t border-white border-opacity-30 pt-4">
+                                        <div class="flex justify-between items-center">
+                                            <span>ROI (First Year):</span>
+                                            <span class="text-3xl font-bold" id="roiPercentage">2,056%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center text-sm text-gray-600 dark:text-gray-400">
+                                *Based on industry salary data and average completion times
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer Testimonials -->
+    <section id="testimonials" class="py-20 bg-gradient-to-r from-primary to-purple-600 text-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">What Our Learners Say</h2>
+                <p class="text-xl text-blue-100 max-w-3xl mx-auto">
+                    Real success stories from professionals who transformed their careers
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="testimonial-card rounded-2xl p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Sarah Chen</h4>
+                            <p class="text-sm text-blue-200">Software Engineer at Google</p>
+                        </div>
+                    </div>
+                    <p class="text-blue-100 mb-4">
+                        "SkillForge AI helped me transition from teaching to tech in just 6 months. The AI tutors adapted to my learning style perfectly, and I landed my dream job with a 40% salary increase!"
+                    </p>
+                    <div class="flex items-center">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="ml-2 text-sm text-blue-200">Premium Plan</span>
+                    </div>
+                </div>
+
+                <div class="testimonial-card rounded-2xl p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Marcus Rodriguez</h4>
+                            <p class="text-sm text-blue-200">Data Scientist at Microsoft</p>
+                        </div>
+                    </div>
+                    <p class="text-blue-100 mb-4">
+                        "The personalized learning paths are incredible. I went from basic Python knowledge to building ML models in production. The career coaching sessions were game-changing!"
+                    </p>
+                    <div class="flex items-center">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="ml-2 text-sm text-blue-200">Premium Plan</span>
+                    </div>
+                </div>
+
+                <div class="testimonial-card rounded-2xl p-6 card-hover">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-user text-white"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Emily Johnson</h4>
+                            <p class="text-sm text-blue-200">Product Manager at Stripe</p>
+                        </div>
+                    </div>
+                    <p class="text-blue-100 mb-4">
+                        "As a busy parent, the flexible learning schedule was perfect. The AI tutors were available 24/7, and I could learn at my own pace. Promoted to senior PM within a year!"
+                    </p>
+                    <div class="flex items-center">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="ml-2 text-sm text-blue-200">Professional Plan</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Frequently Asked Questions</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                    Everything you need to know about our pricing and plans
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto space-y-4">
+                <div class="faq-item bg-white dark:bg-dark-card rounded-lg shadow-sm">
+                    <button class="faq-question w-full px-6 py-4 text-left font-semibold flex items-center justify-between hover:text-primary transition-colors">
+                        <span>Can I switch plans anytime?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content px-6 pb-4">
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate your billing accordingly. You'll always have access to your current plan's features until the next billing cycle.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-white dark:bg-dark-card rounded-lg shadow-sm">
+                    <button class="faq-question w-full px-6 py-4 text-left font-semibold flex items-center justify-between hover:text-primary transition-colors">
+                        <span>What's included in the 14-day free trial?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content px-6 pb-4">
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Your free trial includes full access to your chosen plan's features - no restrictions! You can access courses, AI tutors, progress tracking, and all premium features. No credit card required to start, and you can cancel anytime during the trial.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-white dark:bg-dark-card rounded-lg shadow-sm">
+                    <button class="faq-question w-full px-6 py-4 text-left font-semibold flex items-center justify-between hover:text-primary transition-colors">
+                        <span>Are the certificates industry-recognized?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content px-6 pb-4">
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Absolutely! Our certificates are recognized by leading companies like Google, Microsoft, Amazon, and more. They're also blockchain-verified for authenticity and can be easily shared on LinkedIn and other professional platforms.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-white dark:bg-dark-card rounded-lg shadow-sm">
+                    <button class="faq-question w-full px-6 py-4 text-left font-semibold flex items-center justify-between hover:text-primary transition-colors">
+                        <span>Do you offer refunds?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content px-6 pb-4">
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Yes! We offer a 30-day money-back guarantee on all paid plans. If you're not completely satisfied with your learning experience, contact our support team for a full refund within 30 days of your purchase.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-white dark:bg-dark-card rounded-lg shadow-sm">
+                    <button class="faq-question w-full px-6 py-4 text-left font-semibold flex items-center justify-between hover:text-primary transition-colors">
+                        <span>Can I use SkillForge AI on mobile devices?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content px-6 pb-4">
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Yes! SkillForge AI works seamlessly across all devices. We have native mobile apps for iOS and Android, plus a fully responsive web platform. Your progress syncs automatically across all devices.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-white dark:bg-dark-card rounded-lg shadow-sm">
+                    <button class="faq-question w-full px-6 py-4 text-left font-semibold flex items-center justify-between hover:text-primary transition-colors">
+                        <span>How does Enterprise pricing work?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content px-6 pb-4">
+                        <p class="text-gray-600 dark:text-gray-400">
+                            Enterprise pricing is customized based on your team size, specific needs, and required integrations. We offer volume discounts starting at 10+ users. Contact our sales team for a personalized quote and demo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Money Back Guarantee -->
+    <section class="py-20 bg-white dark:bg-dark-bg">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="money-back-guarantee bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900 dark:to-emerald-900 rounded-2xl p-12 relative overflow-hidden">
+                    <div class="relative z-10">
+                        <div class="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-shield-alt text-white text-3xl"></i>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4 text-green-800 dark:text-green-200">30-Day Money-Back Guarantee</h2>
+                        <p class="text-lg text-green-700 dark:text-green-300 mb-8 max-w-2xl mx-auto">
+                            We're so confident you'll love SkillForge AI that we offer a full 30-day money-back guarantee. If you're not completely satisfied, get a full refund - no questions asked.
+                        </p>
+                        <div class="grid md:grid-cols-3 gap-6 mb-8">
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-check-circle text-green-500 text-xl mr-3"></i>
+                                <span class="text-green-800 dark:text-green-200 font-semibold">No Questions Asked</span>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-check-circle text-green-500 text-xl mr-3"></i>
+                                <span class="text-green-800 dark:text-green-200 font-semibold">Full Refund</span>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-check-circle text-green-500 text-xl mr-3"></i>
+                                <span class="text-green-800 dark:text-green-200 font-semibold">24/7 Support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section -->
+    <section id="final-cta" class="py-20 bg-gradient-to-r from-primary to-purple-600 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to Transform Your Career?</h2>
+            <p class="text-xl mb-8 max-w-3xl mx-auto">
+                Join over 50,000 learners who are already advancing their careers with AI-powered education.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <button id="startTrialBtn" class="px-8 py-4 text-lg bg-white text-primary rounded-lg hover:bg-gray-100 transition-all font-semibold shadow-lg">
+                    <i class="fas fa-rocket mr-2"></i>Start 14-Day Free Trial
+                </button>
+                <button id="contactSalesBtn" class="px-8 py-4 text-lg border-2 border-white text-white hover:bg-white hover:text-primary rounded-lg transition-all font-semibold">
+                    <i class="fas fa-phone mr-2"></i>Contact Sales
+                </button>
+            </div>
+            <p class="text-white text-opacity-80">
+                ✨ No credit card required • 30-day money-back guarantee • Cancel anytime
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-brain text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold gradient-text">SkillForge AI</h3>
+                            <p class="text-xs text-gray-400">Shape Your Future</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-base leading-relaxed">
+                        Revolutionizing education through AI-powered personalized learning experiences.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Pricing</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#pricing-plans" class="text-gray-300 hover:text-primary transition-colors text-base">Plans & Pricing</a></li>
+                        <li><a href="#comparison" class="text-gray-300 hover:text-primary transition-colors text-base">Feature Comparison</a></li>
+                        <li><a href="#roi-calculator" class="text-gray-300 hover:text-primary transition-colors text-base">ROI Calculator</a></li>
+                        <li><a href="#faq" class="text-gray-300 hover:text-primary transition-colors text-base">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Platform</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#courses" class="text-gray-300 hover:text-primary transition-colors text-base">Courses</a></li>
+                        <li><a href="#features" class="text-gray-300 hover:text-primary transition-colors text-base">Features</a></li>
+                        <li><a href="#testimonials" class="text-gray-300 hover:text-primary transition-colors text-base">Success Stories</a></li>
+                        <li><a href="#blog" class="text-gray-300 hover:text-primary transition-colors text-base">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Support</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#help" class="text-gray-300 hover:text-primary transition-colors text-base">Help Center</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-primary transition-colors text-base">Contact Us</a></li>
+                        <li><a href="#status" class="text-gray-300 hover:text-primary transition-colors text-base">System Status</a></li>
+                        <li><a href="#enterprise" class="text-gray-300 hover:text-primary transition-colors text-base">Enterprise</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-400 text-base text-center">
+                    © 2024 SkillForge AI. All rights reserved. • Transform Your Career with AI-Powered Learning
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-primary text-white rounded-full shadow-lg hover:bg-primary-dark transition-all hidden">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // Global variables
+        let isYearly = false;
+        
+        const pricingData = {
+            professional: {
+                monthly: { price: 29, total: 29 * 12 },
+                yearly: { price: 232, total: 232, savings: 20 }
+            },
+            premium: {
+                monthly: { price: 59, total: 59 * 12 },
+                yearly: { price: 472, total: 472, savings: 20 }
+            }
+        };
+
+        // Dark mode functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const html = document.documentElement;
+
+        // Initialize dark mode
+        const savedTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (savedTheme) {
+            if (savedTheme === 'dark') {
+                html.classList.add('dark');
+            }
+        } else if (systemPrefersDark) {
+            html.classList.add('dark');
+        }
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (!localStorage.getItem('theme')) {
+                if (event.matches) {
+                    html.classList.add('dark');
+                } else {
+                    html.classList.remove('dark');
+                }
+            }
+        });
+
+        darkModeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Mobile menu functionality
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const line1 = document.getElementById('line1');
+        const line2 = document.getElementById('line2');
+        const line3 = document.getElementById('line3');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+            
+            if (mobileMenu.classList.contains('hidden')) {
+                line1.style.transform = 'rotate(0deg) translateY(0px)';
+                line2.style.opacity = '1';
+                line3.style.transform = 'rotate(0deg) translateY(0px)';
+            } else {
+                line1.style.transform = 'rotate(45deg) translateY(6px)';
+                line2.style.opacity = '0';
+                line3.style.transform = 'rotate(-45deg) translateY(-6px)';
+            }
+        }
+
+        mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+
+        // Navigation functionality
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+            // Close mobile menu if open
+            if (!mobileMenu.classList.contains('hidden')) {
+                toggleMobileMenu();
+            }
+        }
+
+        // Navigation link event handlers
+        document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                
+                if (href.startsWith('#')) {
+                    const sectionId = href.substring(1);
+                    scrollToSection(sectionId);
+                } else {
+                    showNotification('Redirecting to ' + link.textContent + '...');
+                }
+            });
+        });
+
+        // Pricing toggle functionality
+        const pricingToggle = document.getElementById('pricingToggle');
+        
+        pricingToggle.addEventListener('change', function() {
+            isYearly = this.checked;
+            updatePricing();
+            updateLabels();
+        });
+        
+        function updatePricing() {
+            const priceElements = document.querySelectorAll('.price-animation');
+            const billingCycles = document.querySelectorAll('.billing-cycle');
+            
+            priceElements.forEach(element => {
+                const monthly = parseInt(element.getAttribute('data-monthly'));
+                const yearly = parseInt(element.getAttribute('data-yearly'));
+                
+                if (isYearly) {
+                    element.textContent = '$' + Math.round(yearly / 12);
+                } else {
+                    element.textContent = '$' + monthly;
+                }
+            });
+            
+            billingCycles.forEach(element => {
+                element.textContent = isYearly ? '/month (billed yearly)' : '/month';
+            });
+        }
+        
+        function updateLabels() {
+            const monthlyLabel = document.getElementById('monthlyLabel');
+            const yearlyLabel = document.getElementById('yearlyLabel');
+            
+            if (isYearly) {
+                monthlyLabel.classList.remove('font-bold');
+                yearlyLabel.classList.add('font-bold');
+            } else {
+                monthlyLabel.classList.add('font-bold');
+                yearlyLabel.classList.remove('font-bold');
+            }
+        }
+
+        // FAQ functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.closest('.faq-item');
+                const content = faqItem.querySelector('.faq-content');
+                const icon = question.querySelector('i');
+                
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-content').classList.remove('active');
+                    item.querySelector('i').style.transform = 'rotate(0deg)';
+                });
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                    content.classList.add('active');
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // ROI Calculator
+        function setupROICalculator() {
+            const calculateBtn = document.getElementById('calculateROI');
+            const currentSalaryInput = document.getElementById('currentSalary');
+            const targetRoleSelect = document.getElementById('targetRole');
+            const learningPlanSelect = document.getElementById('learningPlan');
+            
+            calculateBtn.addEventListener('click', calculateROI);
+            
+            // Auto-calculate on input change
+            [currentSalaryInput, targetRoleSelect, learningPlanSelect].forEach(element => {
+                element.addEventListener('change', calculateROI);
+            });
+            
+            // Initial calculation
+            calculateROI();
+        }
+        
+        function calculateROI() {
+            const currentSalary = parseInt(document.getElementById('currentSalary').value) || 50000;
+            const salaryIncreasePercent = parseInt(document.getElementById('targetRole').value) || 15;
+            const monthlyPlan = parseInt(document.getElementById('learningPlan').value) || 29;
+            
+            const newSalary = currentSalary * (1 + salaryIncreasePercent / 100);
+            const annualIncrease = newSalary - currentSalary;
+            const totalInvestment = monthlyPlan * 12;
+            const roiPercentage = ((annualIncrease - totalInvestment) / totalInvestment * 100).toFixed(0);
+            
+            // Update display
+            document.getElementById('newSalary').textContent = '$' + newSalary.toLocaleString();
+            document.getElementById('annualIncrease').textContent = '$' + annualIncrease.toLocaleString();
+            document.getElementById('totalInvestment').textContent = '$' + totalInvestment.toLocaleString();
+            document.getElementById('roiPercentage').textContent = roiPercentage + '%';
+            
+            // Animate the results
+            const roiResults = document.getElementById('roiResults');
+            roiResults.classList.remove('animate-scale-in');
+            setTimeout(() => {
+                roiResults.classList.add('animate-scale-in');
+            }, 10);
+        }
+
+        // Button event handlers
+        function setupButtonHandlers() {
+            document.getElementById('loginBtn').addEventListener('click', () => {
+                showNotification('Redirecting to login page...');
+            });
+
+            document.getElementById('getStartedBtn').addEventListener('click', () => {
+                showNotification('Redirecting to sign up page...');
+            });
+
+            document.getElementById('startTrialBtn').addEventListener('click', () => {
+                showNotification('Starting your free trial...');
+            });
+
+            document.getElementById('contactSalesBtn').addEventListener('click', () => {
+                showNotification('Opening sales contact form...');
+            });
+
+            // Mobile button handlers
+            document.querySelector('.mobile-login-btn').addEventListener('click', () => {
+                showNotification('Redirecting to login page...');
+                toggleMobileMenu();
+            });
+
+            document.querySelector('.mobile-get-started-btn').addEventListener('click', () => {
+                showNotification('Redirecting to sign up page...');
+                toggleMobileMenu();
+            });
+        }
+
+        // Scroll progress indicator
+        function updateScrollProgress() {
+            const scrollProgress = document.getElementById('scrollProgress');
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = scrollTop / docHeight;
+            
+            if (scrollProgress) {
+                scrollProgress.style.transform = `scaleX(${scrollPercent})`;
+            }
+        }
+
+        // Back to top button
+        function updateBackToTopButton() {
+            const backToTop = document.getElementById('backToTop');
+            const scrollTop = window.pageYOffset;
+            
+            if (backToTop) {
+                if (scrollTop > 500) {
+                    backToTop.classList.remove('hidden');
+                } else {
+                    backToTop.classList.add('hidden');
+                }
+            }
+        }
+
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Scroll event handler
+        function handleScroll() {
+            updateScrollProgress();
+            updateBackToTopButton();
+            
+            // Animate elements when they come into view
+            const elements = document.querySelectorAll('.pricing-card, .card-hover, .testimonial-card');
+            elements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                
+                if (isVisible && !element.classList.contains('animate-slide-in')) {
+                    element.classList.add('animate-slide-in');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleScroll);
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 animate-slide-in text-white ${
+                type === 'success' ? 'bg-green-500' : 
+                type === 'error' ? 'bg-red-500' : 
+                'bg-blue-500'
+            }`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info-circle'} mr-2"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 4000);
+        }
+
+        // Footer link functionality
+        document.querySelectorAll('footer a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                
+                if (href.startsWith('#')) {
+                    const sectionId = href.substring(1);
+                    scrollToSection(sectionId);
+                } else {
+                    showNotification(`Navigating to ${link.textContent}...`);
+                }
+            });
+        });
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            setupROICalculator();
+            setupButtonHandlers();
+            handleScroll();
+            
+            showNotification('SkillForge AI Pricing Page loaded successfully! 💰', 'success');
+        });
+
+        console.log('SkillForge AI Pricing Page loaded successfully! 💰');
+    </script>
+</body>
+</html>

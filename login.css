@@ -1,0 +1,263 @@
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceGentle {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 20px rgba(93, 92, 222, 0.2); }
+    to { box-shadow: 0 0 30px rgba(93, 92, 222, 0.4); }
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #5D5CDE, #8B5CF6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass-effect {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.login-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.dark .login-bg {
+    background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
+}
+
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(93, 92, 222, 0.2);
+}
+
+.dark .card-hover:hover {
+    box-shadow: 0 20px 40px rgba(93, 92, 222, 0.3);
+}
+
+.social-btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.social-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.social-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.social-btn:hover::before {
+    left: 100%;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+    transform: translateY(-25px) scale(0.85);
+    color: #5D5CDE;
+}
+
+.input-group label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    color: #9CA3AF;
+    background: white;
+    padding: 0 4px;
+}
+
+.dark .input-group label {
+    background: #2A2A2A;
+}
+
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ffffff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.floating-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.floating-shape {
+    position: absolute;
+    opacity: 0.1;
+    animation: float 8s ease-in-out infinite;
+}
+
+.floating-shape:nth-child(1) {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.floating-shape:nth-child(2) {
+    top: 20%;
+    right: 10%;
+    animation-delay: 2s;
+}
+
+.floating-shape:nth-child(3) {
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+.floating-shape:nth-child(4) {
+    bottom: 10%;
+    right: 20%;
+    animation-delay: 6s;
+}
+
+.floating-shape:nth-child(5) {
+    top: 50%;
+    left: 5%;
+    animation-delay: 1s;
+}
+
+.floating-shape:nth-child(6) {
+    top: 60%;
+    right: 15%;
+    animation-delay: 3s;
+}
+
+.feature-card {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-illustration {
+    background: linear-gradient(135deg, rgba(93, 92, 222, 0.1), rgba(139, 92, 246, 0.1));
+}
+
+.success-checkmark {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 3;
+    stroke: #10b981;
+    stroke-miterlimit: 10;
+    margin: 10px auto;
+    animation: checkmark 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.success-checkmark path {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: checkmark-path 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes checkmark {
+    0% { stroke-dashoffset: 48; }
+    100% { stroke-dashoffset: 0; }
+}
+
+@keyframes checkmark-path {
+    0% { stroke-dashoffset: 48; }
+    100% { stroke-dashoffset: 0; }
+}
+
+.password-strength {
+    height: 4px;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    background-color: #e5e7eb;
+}
+
+.strength-indicator {
+    height: 100%;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    width: 0%;
+}
+
+.strength-weak .strength-indicator { background-color: #ef4444; width: 33%; }
+.strength-medium .strength-indicator { background-color: #f59e0b; width: 66%; }
+.strength-strong .strength-indicator { background-color: #10b981; width: 100%; }
+
+.demo-banner {
+    background: linear-gradient(45deg, #10b981, #059669);
+    color: white;
+    padding: 8px 0;
+    text-align: center;
+    font-size: 14px;
+    position: relative;
+    overflow: hidden;
+}
+
+.demo-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
